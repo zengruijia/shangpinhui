@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <Header></Header>
-    <Footer></Footer>
+    <!-- 路由组件出口 -->
+    <router-view></router-view>
+    <Footer v-if="$route.meta.show"></Footer>
   </div>
 </template>
 
@@ -12,7 +14,10 @@ export default {
   name: 'App',
   components: {
     Header,
-    Footer
+    Footer,
+  },
+  mounted(){
+    console.log(this.$route.meta);
   }
 }
 </script>
