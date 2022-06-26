@@ -4,6 +4,8 @@ import App from './App.vue';
 import router from './router'
 import TypeNav from './pages/Home/TypeNav/index.vue'
 
+import { reqCategoryList } from '@/api'
+reqCategoryList()
 //关闭报错提示
 Vue.config.productionTip = false;
 
