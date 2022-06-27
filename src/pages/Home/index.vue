@@ -1,7 +1,7 @@
 <template>
   <div>
     <TypeNav></TypeNav>
-    <list-container />
+    <ListContainer />
     <Recommend />
     <Rank />
     <Like />
@@ -9,7 +9,7 @@
     <Floor />
     <Brand/>
   </div>
-
+  
 </template>
 
 <script>
@@ -19,6 +19,8 @@ import Rank from '@/pages/Home/Rank'
 import Like from '@/pages/Home/Like'
 import Floor from '@/pages/Home/Floor'
 import Brand from '@/pages/Home/Brand'
+
+
 export default {
   name:'Home',
   components:{
@@ -28,6 +30,12 @@ export default {
     Like,
     Floor,
     Brand
+  },
+  methods:{
+
+  },
+  computed:{
+
   }
 }
 </script>
