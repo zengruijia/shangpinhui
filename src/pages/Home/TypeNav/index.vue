@@ -15,17 +15,21 @@
       </nav>
       <div class="sort">
         <div class="all-sort-list2">
-          <div class="item" v-for="(c1) in categoryList" :key="c1.categoryId">
-            <h3>
+          <!-- 一级 -->
+          <div class="item" v-for="(c1,index) in categoryList" :key="c1.categoryId"
+            :class="{ active: currentIndex == index }">
+            <h3 @mouseenter="changeIndex(index)" @mouseleave="leaveIndex">
               <a href="">{{c1.categoryName}}</a>
             </h3>
-            <div class="item-list clearfix">
+            <!-- 二级 -->
+            <div class="item-list clearfix" :style="{display:currentIndex==index?'block':'none'}">
               <div class="subitem" v-for="(c2) in c1.categoryChild" :key="c2.categoryId">
                 <dl class="fore">
                   <dt>
                     <a href="">{{c2.categoryName}}</a>
                   </dt>
                   <dd>
+                    <!-- 三级 -->
                     <em v-for="(c3) in c2.categoryChild" :key="c3.categoryId">
                       <a href="">{{c3.categoryName}}</a>
                     </em>
@@ -44,6 +48,19 @@
 import {mapState} from 'vuex'
 export default {
   name:'TypeNav',
+  data(){
+    return {
+      currentIndex: -1
+    }
+  },
+  methods:{
+    changeIndex(index){
+      this.currentIndex = index
+    },
+    leaveIndex(){
+      this.currentIndex = -1
+    }
+  },
   mounted(){
     //通知vuex发请求
     this.$store.dispatch('home/categoryList')
@@ -51,9 +68,6 @@ export default {
   computed:{
     ...mapState('home',['categoryList'])
   },
-  methods:{
-
-  }
 }
 </script>
 
@@ -168,11 +182,14 @@ export default {
                 }
               }
   
-              &:hover {
-                .item-list {
-                  display: block;
-                }
-              }
+              // &:hover {
+              //   .item-list {
+              //     display: block;
+              //   }
+              // }
+            }
+            .active {
+              background-color: skyblue;
             }
           }
         }
