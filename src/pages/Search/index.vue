@@ -1,5 +1,7 @@
 <template>
-  <div>params{{$route.params.b}}   query{{$route.query.a}}</div>
+  <div>
+    <TypeNav></TypeNav>
+  </div>
 </template>
 
 <script>

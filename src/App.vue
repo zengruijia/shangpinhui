@@ -18,7 +18,8 @@ export default {
     Footer,
   },
   mounted(){
-    console.log(this.$route.meta);
+    //通知vuex请求typenav的数据
+    this.$store.dispatch('home/categoryList')
   }
 }
 </script>

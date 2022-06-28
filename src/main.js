@@ -7,7 +7,12 @@ import TypeNav from './pages/Home/TypeNav/index.vue'
 //引入vuex
 import store from './store'
 
+//引入组件
 import { reqCategoryList } from '@/api'
+
+//引入mock
+import '@/mock/mockServer'
+
 reqCategoryList()
 //关闭报错提示
 Vue.config.productionTip = false;
