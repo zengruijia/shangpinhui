@@ -1,28 +1,33 @@
 import Vue from 'vue';
 import App from './App.vue';
 //引入路由
-import router from './router'
-import TypeNav from './pages/Home/TypeNav/index.vue'
+import router from './router';
+//引入组件
+import TypeNav from './components/TypeNav';
+import Carousel from './components/Carousel'
 
 //引入vuex
-import store from './store'
+import store from './store';
 
-//引入组件
-import { reqCategoryList } from '@/api'
+
+import { reqCategoryList } from '@/api';
 
 //引入mock
-import '@/mock/mockServer'
+import '@/mock/mockServer';
 
-reqCategoryList()
+//引入swiper样式
+import 'swiper/css/swiper.css';
+
+reqCategoryList();
 //关闭报错提示
 Vue.config.productionTip = false;
 
 //注册三级联动全局组件
-Vue.component(TypeNav.name, TypeNav)
-
+Vue.component(TypeNav.name, TypeNav);
+Vue.component(Carousel.name, Carousel);
 
 new Vue({
-  router,
-  store,
-  render: h => h(App),
+	router,
+	store,
+	render: h => h(App),
 }).$mount('#app');

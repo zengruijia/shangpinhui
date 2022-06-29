@@ -9,4 +9,7 @@ import mockRequests from './mock';
 export const reqCategoryList = () => requests({ url: 'product/getBaseCategoryList', methods: 'get' });
 
 //获取banner接口
-export const reqGetBannerList = () => mockRequests({ url: '/banner', methods: 'get' });
+export const reqGetBannerList = () => mockRequests({ url: '/banner'});
+
+//获取floor数据
+export const reqFloorList = () => mockRequests({ url: '/floor'});
