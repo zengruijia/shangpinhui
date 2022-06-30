@@ -1,7 +1,7 @@
 <template>
-	<div class="swiper-container" ref="cue">
+	<div class="swiper-container" ref="cur">
 		<div class="swiper-wrapper">
-			<div class="swiper-slide" v-for="carouse in list.carouselList" :key="carouse.id">
+			<div class="swiper-slide" v-for="carouse in list" :key="carouse.id">
 				<img :src="carouse.imgUrl" />
 			</div>
 		</div>
@@ -15,9 +15,13 @@
 </template>
 
 <script>
+import Swiper from 'swiper';
 export default {
 	name: 'carousel',
 	props: ['list'], //接收home传过来的数据
+	mounted() {
+		console.log('this.list', this.list);
+	},
 	watch: {
 		list: {
 			immediate: true, //开启立即监听

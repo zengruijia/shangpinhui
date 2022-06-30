@@ -24,7 +24,7 @@ Vue.config.productionTip = false;
 
 //注册三级联动全局组件
 Vue.component(TypeNav.name, TypeNav);
-Vue.component(Carousel.name, Carousel);
+Vue.component('Carousel', Carousel);
 
 new Vue({
 	router,
