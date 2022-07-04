@@ -11,6 +11,7 @@ import store from './store';
 
 
 import { reqCategoryList } from '@/api';
+import { reqGetSearchInfo } from '@/api';
 
 //引入mock
 import '@/mock/mockServer';
@@ -19,6 +20,8 @@ import '@/mock/mockServer';
 import 'swiper/css/swiper.css';
 
 reqCategoryList();
+console.log(reqGetSearchInfo({}));
+
 //关闭报错提示
 Vue.config.productionTip = false;
 
