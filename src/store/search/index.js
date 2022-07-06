@@ -9,12 +9,14 @@ const actions = {
 		let result = await reqGetSearchInfo(params);
 		if (result.code == 200) {
 			commit('GETSEARCHLIST', result.data);
+			console.log(result.data);
+			
 		}
 	},
 };
 const mutations = {
 	GETSEARCHLIST(state, value) {
-		state.searchList = value;
+		state.searchList = value;	
 	},
 };
 //计算属性

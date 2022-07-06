@@ -117,12 +117,32 @@ export default {
 	components: {
 		SearchSelector,
 	},
+	data(){
+		return {
+			searchParams:{
+				"category1Id": "", //一级分类
+				"category2Id": "",	//二级分类
+				"category3Id": "", //三级分类
+				"categoryName": "",  //分类名字
+				"keyword": "", //关键字
+				"order": "", //排序
+				"pageNo": 1, //第几页
+				"pageSize": 10, //每页数量
+				"props": ["1:1700-2799:价格", "2:6.65-6.74英寸:屏幕尺寸"],
+				"trademark": "4:小米"  //品牌
+			}
+		}
+	},
+	beforeMount(){
+		//发请求之前改变searchParams
+		Object.assign(this.searchParams,this.$route.query,this.$route.params)
+	},
 	mounted() {
 		this.getData();
 	},
 	computed: {
 		...mapState('search', ['searchList']),
-		...mapGetters('search', ['goodsList']),
+		...mapGetters('search', ['goodsList', 'trademarkList','attrsList']),
 	},
 	methods: {
 		getData() {

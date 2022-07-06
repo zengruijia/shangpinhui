@@ -55,11 +55,8 @@ export default {
       this.$router.push({
         name:'search',
         query:{
-          a: this.keyword
-        },
-        params:{
-          b: '456'||undefined
-        },
+          categorynName: this.keyword
+        }
       },()=>{})
     }
   }
