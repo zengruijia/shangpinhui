@@ -54,8 +54,8 @@ export default {
       //跳转search路由
       this.$router.push({
         name:'search',
-        query:{
-          categorynName: this.keyword
+        params:{
+          keyword: this.keyword
         }
       },()=>{})
     }

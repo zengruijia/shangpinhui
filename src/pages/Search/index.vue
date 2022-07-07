@@ -11,10 +11,7 @@
 						</li>
 					</ul>
 					<ul class="fl sui-tag">
-						<li class="with-x">手机</li>
-						<li class="with-x">iphone<i>×</i></li>
-						<li class="with-x">华为<i>×</i></li>
-						<li class="with-x">OPPO<i>×</i></li>
+						<li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
 					</ul>
 				</div>
 
@@ -128,8 +125,8 @@ export default {
 				"order": "", //排序
 				"pageNo": 1, //第几页
 				"pageSize": 10, //每页数量
-				"props": ["1:1700-2799:价格", "2:6.65-6.74英寸:屏幕尺寸"],
-				"trademark": "4:小米"  //品牌
+				"props": [],
+				"trademark": ""  //品牌
 			}
 		}
 	},
@@ -146,9 +143,31 @@ export default {
 	},
 	methods: {
 		getData() {
-			this.$store.dispatch('search/getSearchList', {});
+			this.$store.dispatch('search/getSearchList', this.searchParams);
 		},
+		//删除分类名字
+		removeCategoryName(){
+			this.searchParams.categoryName = undefined
+			this.searchParams.category1Id = undefined
+			this.searchParams.category2Id = undefined
+			this.searchParams.category3Id = undefined
+			this.getData();
+			//地址栏清空
+			if(this.$route.params){
+				this.$router.push({name:'search',params:this.$route.params})
+			}
+		}
 	},
+	watch: {
+		$route(newValue,oldValue) {
+			console.log(this.searchParams);
+			this.searchParams.category1Id = undefined
+			this.searchParams.category2Id = undefined
+			this.searchParams.category3Id = undefined
+			Object.assign(this.searchParams, this.$route.query, this.$route.params)
+			this.getData();
+		}
+	}
 };
 </script>
 
