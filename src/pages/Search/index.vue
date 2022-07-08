@@ -11,12 +11,16 @@
 						</li>
 					</ul>
 					<ul class="fl sui-tag">
-						<li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
+						<!-- 面包屑 -->
+						<li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i @click="removeCategoryName">×</i></li>
+						<li class="with-x" v-if="searchParams.keyword">{{ searchParams.keyword }}<i @click="removekeyword">×</i></li>
+						<li class="with-x" v-if="searchParams.trademark">{{ searchParams.trademark.split(':')[1] }}<i @click="removetrademark">×</i></li>
+						<li class="with-x" v-for="(props, index) in searchParams.props" :key="index">{{ props.split(':')[1] }}<i @click="removeprops(index)">×</i></li>
 					</ul>
 				</div>
 
 				<!--selector-->
-				<SearchSelector />
+				<SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo" />
 
 				<!--details-->
 				<div class="details clearfix">
@@ -114,60 +118,94 @@ export default {
 	components: {
 		SearchSelector,
 	},
-	data(){
+	data() {
 		return {
-			searchParams:{
-				"category1Id": "", //一级分类
-				"category2Id": "",	//二级分类
-				"category3Id": "", //三级分类
-				"categoryName": "",  //分类名字
-				"keyword": "", //关键字
-				"order": "", //排序
-				"pageNo": 1, //第几页
-				"pageSize": 10, //每页数量
-				"props": [],
-				"trademark": ""  //品牌
-			}
-		}
+			searchParams: {
+				category1Id: '', //一级分类
+				category2Id: '', //二级分类
+				category3Id: '', //三级分类
+				categoryName: '', //分类名字
+				keyword: '', //关键字
+				order: '', //排序
+				pageNo: 1, //第几页
+				pageSize: 10, //每页数量
+				props: [],
+				trademark: '', //品牌
+			},
+		};
 	},
-	beforeMount(){
+	beforeMount() {
 		//发请求之前改变searchParams
-		Object.assign(this.searchParams,this.$route.query,this.$route.params)
+		Object.assign(this.searchParams, this.$route.query, this.$route.params);
 	},
 	mounted() {
 		this.getData();
 	},
 	computed: {
 		...mapState('search', ['searchList']),
-		...mapGetters('search', ['goodsList', 'trademarkList','attrsList']),
+		...mapGetters('search', ['goodsList', 'trademarkList', 'attrsList']),
 	},
 	methods: {
 		getData() {
 			this.$store.dispatch('search/getSearchList', this.searchParams);
 		},
 		//删除分类名字
-		removeCategoryName(){
-			this.searchParams.categoryName = undefined
-			this.searchParams.category1Id = undefined
-			this.searchParams.category2Id = undefined
-			this.searchParams.category3Id = undefined
+		removeCategoryName() {
+			this.searchParams.categoryName = undefined;
+			this.searchParams.category1Id = undefined;
+			this.searchParams.category2Id = undefined;
+			this.searchParams.category3Id = undefined;
 			this.getData();
 			//地址栏清空
-			if(this.$route.params){
-				this.$router.push({name:'search',params:this.$route.params})
+			if (this.$route.params) {
+				this.$router.push({ name: 'search', params: this.$route.params });
 			}
-		}
+		},
+		//清空搜索栏信息
+		removekeyword() {
+			this.searchParams.keyword = undefined;
+			this.getData();
+			if (this.$route.query) {
+				this.$router.push({ name: 'search', query: this.$route.query });
+			}
+			//通知兄弟组件header清除关键字
+			this.$bus.$emit('clear');
+		},
+		//清空品牌信息
+		removetrademark() {
+			this.searchParams.trademark = undefined;
+			this.getData();
+		},
+		removeprops(index) {
+			this.searchParams.props.splice(index, 1);
+			this.getData();
+		},
+		//获取子组件传值重新发请求
+		trademarkInfo(trademark) {
+			this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+			this.getData();
+		},
+		//获取子组件传过来的商品属性值
+		attrInfo(attrs, attrValue) {
+			console.log('商品属性值', attrs, attrValue);
+			console.log(attrs);
+			let props = `${attrs.attrId}:${attrValue}:${attrs.attrName}`;
+			//数组去重
+			if (this.searchParams.props.indexOf(props) == -1) this.searchParams.props.push(props);
+			//发请求
+			this.getData();
+		},
 	},
 	watch: {
-		$route(newValue,oldValue) {
+		$route(newValue, oldValue) {
 			console.log(this.searchParams);
-			this.searchParams.category1Id = undefined
-			this.searchParams.category2Id = undefined
-			this.searchParams.category3Id = undefined
-			Object.assign(this.searchParams, this.$route.query, this.$route.params)
+			this.searchParams.category1Id = undefined;
+			this.searchParams.category2Id = undefined;
+			this.searchParams.category3Id = undefined;
+			Object.assign(this.searchParams, this.$route.query, this.$route.params);
 			this.getData();
-		}
-	}
+		},
+	},
 };
 </script>
 

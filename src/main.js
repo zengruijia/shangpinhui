@@ -4,11 +4,10 @@ import App from './App.vue';
 import router from './router';
 //引入组件
 import TypeNav from './components/TypeNav';
-import Carousel from './components/Carousel'
+import Carousel from './components/Carousel';
 
 //引入vuex
 import store from './store';
-
 
 import { reqCategoryList } from '@/api';
 import { reqGetSearchInfo } from '@/api';
@@ -33,4 +32,11 @@ new Vue({
 	router,
 	store,
 	render: h => h(App),
+	//全局事件总线
+	beforeCreate() {
+		Vue.prototype.$bus = this;
+	},
+	mounted() {
+		console.log(this);
+	},
 }).$mount('#app');
