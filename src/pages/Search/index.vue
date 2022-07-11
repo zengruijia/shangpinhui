@@ -12,10 +12,14 @@
 					</ul>
 					<ul class="fl sui-tag">
 						<!-- 面包屑 -->
-						<li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i @click="removeCategoryName">×</i></li>
-						<li class="with-x" v-if="searchParams.keyword">{{ searchParams.keyword }}<i @click="removekeyword">×</i></li>
-						<li class="with-x" v-if="searchParams.trademark">{{ searchParams.trademark.split(':')[1] }}<i @click="removetrademark">×</i></li>
-						<li class="with-x" v-for="(props, index) in searchParams.props" :key="index">{{ props.split(':')[1] }}<i @click="removeprops(index)">×</i></li>
+						<li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i
+								@click="removeCategoryName">×</i></li>
+						<li class="with-x" v-if="searchParams.keyword">{{ searchParams.keyword }}<i @click="removekeyword">×</i>
+						</li>
+						<li class="with-x" v-if="searchParams.trademark">{{ searchParams.trademark.split(':')[1] }}<i
+								@click="removetrademark">×</i></li>
+						<li class="with-x" v-for="(props, index) in searchParams.props" :key="index">{{ props.split(':')[1] }}<i
+								@click="removeprops(index)">×</i></li>
 					</ul>
 				</div>
 
@@ -27,23 +31,11 @@
 					<div class="sui-navbar">
 						<div class="navbar-inner filter">
 							<ul class="sui-nav">
-								<li class="active">
-									<a href="#">综合</a>
+								<li :class="{active: isOne}">
+									<a>综合<span v-show="isOne">{{isAsc?'↑':'↓'}}</span></a>
 								</li>
-								<li>
-									<a href="#">销量</a>
-								</li>
-								<li>
-									<a href="#">新品</a>
-								</li>
-								<li>
-									<a href="#">评价</a>
-								</li>
-								<li>
-									<a href="#">价格⬆</a>
-								</li>
-								<li>
-									<a href="#">价格⬇</a>
+								<li :class="{active: isTwo}">
+									<a>价格<span v-show="isTwo">{{isAsc?'↑':'↓'}}</span></a>
 								</li>
 							</ul>
 						</div>
@@ -126,7 +118,7 @@ export default {
 				category3Id: '', //三级分类
 				categoryName: '', //分类名字
 				keyword: '', //关键字
-				order: '', //排序
+				order: '1:desc', //排序
 				pageNo: 1, //第几页
 				pageSize: 10, //每页数量
 				props: [],
@@ -144,6 +136,18 @@ export default {
 	computed: {
 		...mapState('search', ['searchList']),
 		...mapGetters('search', ['goodsList', 'trademarkList', 'attrsList']),
+		isOne() {
+			return this.searchParams.order.indexOf('1')!=-1
+		},
+		isTwo() {
+			return this.searchParams.order.indexOf('2') != -1
+		},
+		isAsc() {
+			return this.searchParams.order.indexOf('asc') != -1
+		},
+		isDesc() {
+			return this.searchParams.order.indexOf('desc') != -1
+		}
 	},
 	methods: {
 		getData() {
