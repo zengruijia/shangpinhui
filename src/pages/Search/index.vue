@@ -12,14 +12,10 @@
 					</ul>
 					<ul class="fl sui-tag">
 						<!-- 面包屑 -->
-						<li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i
-								@click="removeCategoryName">×</i></li>
-						<li class="with-x" v-if="searchParams.keyword">{{ searchParams.keyword }}<i @click="removekeyword">×</i>
-						</li>
-						<li class="with-x" v-if="searchParams.trademark">{{ searchParams.trademark.split(':')[1] }}<i
-								@click="removetrademark">×</i></li>
-						<li class="with-x" v-for="(props, index) in searchParams.props" :key="index">{{ props.split(':')[1] }}<i
-								@click="removeprops(index)">×</i></li>
+						<li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i @click="removeCategoryName">×</i></li>
+						<li class="with-x" v-if="searchParams.keyword">{{ searchParams.keyword }}<i @click="removekeyword">×</i></li>
+						<li class="with-x" v-if="searchParams.trademark">{{ searchParams.trademark.split(':')[1] }}<i @click="removetrademark">×</i></li>
+						<li class="with-x" v-for="(props, index) in searchParams.props" :key="index">{{ props.split(':')[1] }}<i @click="removeprops(index)">×</i></li>
 					</ul>
 				</div>
 
@@ -31,11 +27,15 @@
 					<div class="sui-navbar">
 						<div class="navbar-inner filter">
 							<ul class="sui-nav">
-								<li :class="{active: isOne}">
-									<a>综合<span v-show="isOne">{{isAsc?'↑':'↓'}}</span></a>
+								<li :class="{ active: isOne }" @click="changeOrder(1)">
+									<a
+										>综合<span v-show="isOne">{{ isAsc ? '↑' : '↓' }}</span></a
+									>
 								</li>
-								<li :class="{active: isTwo}">
-									<a>价格<span v-show="isTwo">{{isAsc?'↑':'↓'}}</span></a>
+								<li :class="{ active: isTwo }" @click="changeOrder(2)">
+									<a
+										>价格<span v-show="isTwo">{{ isAsc ? '↑' : '↓' }}</span></a
+									>
 								</li>
 							</ul>
 						</div>
@@ -118,7 +118,7 @@ export default {
 				category3Id: '', //三级分类
 				categoryName: '', //分类名字
 				keyword: '', //关键字
-				order: '1:desc', //排序
+				order: '1:desc', //排序（默认综合降序）
 				pageNo: 1, //第几页
 				pageSize: 10, //每页数量
 				props: [],
@@ -137,17 +137,17 @@ export default {
 		...mapState('search', ['searchList']),
 		...mapGetters('search', ['goodsList', 'trademarkList', 'attrsList']),
 		isOne() {
-			return this.searchParams.order.indexOf('1')!=-1
+			return this.searchParams.order.indexOf('1') != -1;
 		},
 		isTwo() {
-			return this.searchParams.order.indexOf('2') != -1
+			return this.searchParams.order.indexOf('2') != -1;
 		},
 		isAsc() {
-			return this.searchParams.order.indexOf('asc') != -1
+			return this.searchParams.order.indexOf('asc') != -1;
 		},
 		isDesc() {
-			return this.searchParams.order.indexOf('desc') != -1
-		}
+			return this.searchParams.order.indexOf('desc') != -1;
+		},
 	},
 	methods: {
 		getData() {
@@ -197,6 +197,22 @@ export default {
 			//数组去重
 			if (this.searchParams.props.indexOf(props) == -1) this.searchParams.props.push(props);
 			//发请求
+			this.getData();
+		},
+		// 排序按钮
+		changeOrder(flag) {
+			//flag代表用户点击的是综合还是价格
+			let order = this.searchParams.order.split(':');
+			if (order[0] == flag) {
+				if (order[1] == 'desc') {
+					order[1] = 'asc';
+				} else {
+					order[1] = 'desc';
+				}
+			} else {
+				order[0] = flag;
+			}
+			this.searchParams.order = order.join(':');
 			this.getData();
 		},
 	},
