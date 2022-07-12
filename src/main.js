@@ -2,9 +2,11 @@ import Vue from 'vue';
 import App from './App.vue';
 //引入路由
 import router from './router';
-//引入组件
+
+//引入全局组件
 import TypeNav from './components/TypeNav';
 import Carousel from './components/Carousel';
+import Pagination from './components/Pagination'
 
 //引入vuex
 import store from './store';
@@ -27,6 +29,7 @@ Vue.config.productionTip = false;
 //注册三级联动全局组件
 Vue.component(TypeNav.name, TypeNav);
 Vue.component('Carousel', Carousel);
+Vue.component(Pagination.name, Pagination)
 
 new Vue({
 	router,
