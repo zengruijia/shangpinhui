@@ -68,7 +68,7 @@
 						</ul>
 					</div>
 					<!-- 分页 -->
-					<Pagination />
+					<Pagination :pageNo="27" :pageSize="3" :total="91" :continues="5" />
 				</div>
 			</div>
 		</div>
