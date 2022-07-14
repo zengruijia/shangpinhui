@@ -23,6 +23,9 @@ const getters = {
 	skuInfo(state) {
 		return state.goodsInfo.skuInfo || {};
 	},
+	spuSaleAttrList() {
+		return state.goodsInfo.spuSaleAttrList || []
+	}
 };
 
 export default {
