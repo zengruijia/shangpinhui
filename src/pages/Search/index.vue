@@ -40,12 +40,15 @@
 							</ul>
 						</div>
 					</div>
+					<!-- 商品列表 -->
 					<div class="goods-list">
 						<ul class="yui3-g">
 							<li class="yui3-u-1-5" v-for="good in goodsList" :key="good.id">
 								<div class="list-wrap">
 									<div class="p-img">
-										<a href="item.html" target="_blank"><img :src="good.defaultImg" /></a>
+										<router-link :to="`/detail/${good.id}`">
+											<img :src="good.defaultImg" />
+										</router-link>
 									</div>
 									<div class="price">
 										<strong>
@@ -67,9 +70,9 @@
 							</li>
 						</ul>
 					</div>
-					<!-- 分页 -->
-					<Pagination :pageNo="27" :pageSize="3" :total="91" :continues="5" />
-				</div>
+					<!-- 分页器 -->
+					<Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5" @getPageNo="getPageNo" />
+        </div>
 			</div>
 		</div>
 	</div>
@@ -108,6 +111,7 @@ export default {
 	},
 	computed: {
 		...mapState('search', ['searchList']),
+		...mapState({ total: state => state.search.searchList.total }),
 		...mapGetters('search', ['goodsList', 'trademarkList', 'attrsList']),
 		isOne() {
 			return this.searchParams.order.indexOf('1') != -1;
@@ -186,6 +190,13 @@ export default {
 				order[0] = flag;
 			}
 			this.searchParams.order = order.join(':');
+			this.getData();
+		},
+		//获取分页器第几页
+		getPageNo(pageNo) {
+			// 整理子组件发过来的页数
+			this.searchParams.pageNo = pageNo;
+			// 再次发请求
 			this.getData();
 		},
 	},

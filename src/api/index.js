@@ -9,12 +9,12 @@ import mockRequests from './mock';
 export const reqCategoryList = () => requests({ url: 'product/getBaseCategoryList', methods: 'get' });
 
 //获取banner接口
-export const reqGetBannerList = () => mockRequests({ url: '/banner'});
+export const reqGetBannerList = () => mockRequests({ url: '/banner' });
 
 //获取floor数据
-export const reqFloorList = () => mockRequests({ url: '/floor'});
+export const reqFloorList = () => mockRequests({ url: '/floor' });
 
-//获取搜索模块数据 地址/api/list  请求方式POST  
+//获取搜索模块数据 地址/api/list  请求方式POST
 // 参数 {
 //   "category3Id": "61",
 //   "categoryName": "手机",
@@ -24,6 +24,7 @@ export const reqFloorList = () => mockRequests({ url: '/floor'});
 //   "pageSize": 10,
 //   "props": ["1:1700-2799:价格", "2:6.65-6.74英寸:屏幕尺寸"],
 // }
-export const reqGetSearchInfo = (params) => requests({url:'/list', method:"post", data: params})
+export const reqGetSearchInfo = params => requests({ url: '/list', method: 'post', data: params });
 
-
+//获取产品详情信息接口 url:/api/item/{skuId} 请求方式get
+export const reqGoodsInfo = skuId => requests({ url: `/item/${skuId}`, method: 'get'});
