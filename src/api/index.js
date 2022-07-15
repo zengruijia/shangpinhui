@@ -27,4 +27,7 @@ export const reqFloorList = () => mockRequests({ url: '/floor' });
 export const reqGetSearchInfo = params => requests({ url: '/list', method: 'post', data: params });
 
 //获取产品详情信息接口 url:/api/item/{skuId} 请求方式get
-export const reqGoodsInfo = skuId => requests({ url: `/item/${skuId}`, method: 'get'});
+export const reqGoodsInfo = skuId => requests({ url: `/item/${skuId}`, method: 'get' });
+
+//将产品添加到购物车中（或更新某一个产品数据）:/api/cart/addToCart/{ skuId }/{ skuNum }  post
+export const reqAddOrUpdateShopCart = (skuId, skuNum) => requests({ url: `/cart/addToCart/${ skuId }/${ skuNum }`, method: 'post' });

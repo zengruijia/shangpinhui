@@ -7,9 +7,9 @@
 		<section class="con">
 			<!-- 导航路径区域 -->
 			<div class="conPoin">
-				<span v-show="categoryView.category1Name">{{categoryView.category1Name}}</span>
-				<span v-show="categoryView.category2Name">{{categoryView.category2Name}}</span>
-				<span v-show="categoryView.category3Name">{{categoryView.category3Name}}</span>
+				<span v-show="categoryView.category1Name">{{ categoryView.category1Name }}</span>
+				<span v-show="categoryView.category2Name">{{ categoryView.category2Name }}</span>
+				<span v-show="categoryView.category3Name">{{ categoryView.category3Name }}</span>
 			</div>
 			<!-- 主要内容区域 -->
 			<div class="mainCon">
@@ -23,14 +23,14 @@
 				<!-- 右侧选择区域布局 -->
 				<div class="InfoWrap">
 					<div class="goodsDetail">
-						<h3 class="InfoName">{{skuInfo.skuName}}</h3>
-						<p class="news">{{skuInfo.skuDesc}}</p>
+						<h3 class="InfoName">{{ skuInfo.skuName }}</h3>
+						<p class="news">{{ skuInfo.skuDesc }}</p>
 						<div class="priceArea">
 							<div class="priceArea1">
 								<div class="title">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</div>
 								<div class="price">
 									<i>¥</i>
-									<em>{{skuInfo.price}}</em>
+									<em>{{ skuInfo.price }}</em>
 									<span>降价通知</span>
 								</div>
 								<div class="remark">
@@ -63,22 +63,21 @@
 					<div class="choose">
 						<div class="chooseArea">
 							<div class="choosed"></div>
-							<dl v-for="(spuSaleAttr) in spuSaleAttrList" :key="spuSaleAttr.id">
+							<dl v-for="spuSaleAttr in spuSaleAttrList" :key="spuSaleAttr.id">
 								<dt class="title">{{ spuSaleAttr.saleAttrName }}</dt>
-								<dd changepirce="0" v-for="(spuSaleAttrValue) in spuSaleAttr.spuSaleAttrValueList"
-									:key="spuSaleAttrValue.id" 
-									:class="{active:spuSaleAttrValue.isChecked==1}">
-									{{spuSaleAttrValue.saleAttrValueName }}</dd>
+								<dd changepirce="0" v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList" :key="spuSaleAttrValue.id" :class="{ active: spuSaleAttrValue.isChecked == 1 }" @click="changeActive(spuSaleAttrValue, spuSaleAttr.spuSaleAttrValueList)">
+									{{ spuSaleAttrValue.saleAttrValueName }}
+								</dd>
 							</dl>
 						</div>
 						<div class="cartWrap">
 							<div class="controls">
-								<input autocomplete="off" class="itxt" />
-								<a href="javascript:" class="plus">+</a>
-								<a href="javascript:" class="mins">-</a>
+								<input autocomplete="off" class="itxt" v-model="skuNum" @change="changeSkuNum" />
+								<a href="javascript:" class="plus" @click="skuNum++">+</a>
+								<a href="javascript:" class="mins" @click="skuNum <= 1 ? (skuNum = 1) : skuNum--">-</a>
 							</div>
 							<div class="add">
-								<a href="javascript:">加入购物车</a>
+								<a @click="addShopCar">加入购物车</a>
 							</div>
 						</div>
 					</div>
@@ -322,6 +321,12 @@ import Zoom from './Zoom/Zoom';
 import { mapState, mapGetters } from 'vuex';
 export default {
 	name: 'Detail',
+	data() {
+		return {
+			//购买产品数量
+			skuNum: 1,
+		};
+	},
 	components: {
 		ImageList,
 		Zoom,
@@ -332,8 +337,35 @@ export default {
 	},
 	computed: {
 		...mapGetters('detail', ['categoryView', 'skuInfo', 'spuSaleAttrList']),
-		skuImageList(){
-			return this.skuInfo.skuImageList||[]
+		skuImageList() {
+			return this.skuInfo.skuImageList || [];
+		},
+	},
+	methods: {
+		//图片选择高亮
+		changeActive(saleAttrValue, arr) {
+			//遍历全部售卖属性的ischecked为0
+			arr.forEach(item => {
+				item.isChecked = 0;
+			});
+			//被点击的为1
+			saleAttrValue.isChecked = 1;
+		},
+		//用户输入
+		changeSkuNum(e) {
+			let value = e.target.value * 1;
+			//如果用户输入值非法
+			if (isNaN(value) || value < 1) {
+				this.skuNum = 1;
+			} else {
+				this.skuNum = parseInt(value);
+			}
+		},
+		//加购物车
+		async addShopCar() {
+			//发请求
+			let res = await this.$store.dispatch('detail/addOrUpdateShopCart', { skuId: this.$route.params.skuid, skuNum: this.skuNum });
+			console.log(res);
 		},
 	},
 };
