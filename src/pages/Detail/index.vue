@@ -361,11 +361,18 @@ export default {
 				this.skuNum = parseInt(value);
 			}
 		},
-		//加购物车
+		//加入购物车
 		async addShopCar() {
-			//发请求
-			let res = await this.$store.dispatch('detail/addOrUpdateShopCart', { skuId: this.$route.params.skuid, skuNum: this.skuNum });
-			console.log(res);
+			//点击购物车，将数据发送给服务器告诉那加入了哪个商品
+			//若果成功跳转购物车，如果失败提醒用户
+			try {
+				//成功
+				await this.$store.dispatch('detail/addOrUpdateShopCart', { skuId: this.$route.params.skuid, skuNum: this.skuNum });
+        this.$router.push({name:'addcartsuccess'})
+      } catch (error) {
+				//失败
+				alert('失败');
+			}
 		},
 	},
 };

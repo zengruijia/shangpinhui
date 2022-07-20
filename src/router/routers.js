@@ -4,13 +4,20 @@ import Search from '@/pages/Search';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Detail from '@/pages/Detail';
+import AddCartSuccess from '@/pages/AddCartSuccess'
 
 //路由配置星系
 export default [
+  {
+    name: 'addcartsuccess',
+    path: '/addcartsuccess',
+    component: AddCartSuccess,
+    meta: { show: true },
+  },
 	{
 		path: '/home',
 		component: Home,
-		meta: { show: true }, //路由元信息
+		meta: { show: true }, //路由元信息,用来判断是否显示footer
 	},
 	{
 		name: 'search',

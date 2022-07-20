@@ -10,15 +10,18 @@ const actions = {
 			commit('GETGOODSINFO', result.data);
 		}
 	},
-	//向购物车发送数据
+
+	//加入购物车||修改某一个产品个数
 	async addOrUpdateShopCart({ commit }, { skuId, skuNum }) {
+		//发请求
 		let result = await reqAddOrUpdateShopCart(skuId, skuNum);
-		if(result.code == 200){
-      return '成功'
-    }else{
-      //加入失败
-      return Promise.reject(new Error('faile'))
-    }
+		if (result.code == 200) {
+			//返回成功
+			return 'ok';
+		} else {
+			//返回失败
+			return Promise.reject(new Error('faile'));
+		}
 	},
 };
 const mutations = {
