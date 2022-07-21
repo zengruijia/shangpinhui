@@ -2,7 +2,9 @@
 import axios from 'axios';
 //引入加载进度条和样式
 import nprogress from 'nprogress';
-import 'nprogress/nprogress.css'
+import 'nprogress/nprogress.css';
+//在当前模块引入store
+import store from '@/store';
 
 //利用axios对象方法实例create,去创建一个axios实例
 //request就是axios,只是处理一下
@@ -16,6 +18,10 @@ const requests = axios.create({
 
 //请求拦截器
 requests.interceptors.request.use(config => {
+	if (store.state.detail.uuid_token) {
+		//请求头添加字段(userTempId):和后端商量好
+		config.headers.userTempId = store.state.detail.uuid_token;
+	}
 	nprogress.start();
 	return config;
 });

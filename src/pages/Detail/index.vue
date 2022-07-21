@@ -368,8 +368,12 @@ export default {
 			try {
 				//成功
 				await this.$store.dispatch('detail/addOrUpdateShopCart', { skuId: this.$route.params.skuid, skuNum: this.skuNum });
-        this.$router.push({name:'addcartsuccess'})
-      } catch (error) {
+				//路由跳转
+				//产品信息数（比较复杂的），通过会话存储（会话存储不持久，关闭浏览器会删除）
+				//本地或会话存储只能存字符串
+				sessionStorage.setItem('SKUINFO', JSON.stringify(this.skuInfo));
+				this.$router.push({ name: 'addcartsuccess', query: { sukNum: this.skuNum } });
+			} catch (error) {
 				//失败
 				alert('失败');
 			}

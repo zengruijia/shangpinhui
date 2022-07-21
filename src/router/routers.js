@@ -5,15 +5,22 @@ import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Detail from '@/pages/Detail';
 import AddCartSuccess from '@/pages/AddCartSuccess'
+import ShopCar from '@/pages/ShopCar'
 
 //路由配置星系
 export default [
-  {
-    name: 'addcartsuccess',
-    path: '/addcartsuccess',
-    component: AddCartSuccess,
-    meta: { show: true },
-  },
+	{ 
+    name: 'shopcar',
+		path: '/shopcar',
+		component: ShopCar,
+		meta: { show: true },
+	},
+	{
+		name: 'addcartsuccess',
+		path: '/addcartsuccess',
+		component: AddCartSuccess,
+		meta: { show: true },
+	},
 	{
 		path: '/home',
 		component: Home,
