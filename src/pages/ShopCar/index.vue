@@ -14,7 +14,7 @@
 			<div class="cart-body">
 				<ul class="cart-list" v-for="cart in cartInfoList" :key="cart.id">
 					<li class="cart-list-con1">
-						<input type="checkbox" name="chk_list" :checked="cart.isChecked == 1" />
+						<input type="checkbox" name="chk_list" :checked="cart.isChecked == 1" @change="updateChecked(cart,$event)" />
 					</li>
 					<li class="cart-list-con2">
 						<img :src="cart.imgUrl" />
@@ -25,7 +25,8 @@
 					</li>
 					<li class="cart-list-con5">
 						<a href="javascript:void(0)" class="mins" @click="handle('minus', -1, cart)">-</a>
-						<input autocomplete="off" type="text" :value="cart.skuNum" minnum="1" class="itxt" @change="handle('change', $event.target.value * 1, cart)" />
+						<input autocomplete="off" type="text" :value="cart.skuNum" minnum="1" class="itxt"
+							@change="handle('change', $event.target.value * 1, cart)" />
 						<a href="javascript:void(0)" class="plus" @click="handle('add', 1, cart)">+</a>
 					</li>
 					<li class="cart-list-con6">
@@ -51,8 +52,7 @@
 			</div>
 			<div class="money-box">
 				<div class="chosed">
-					已选择 <span>{{ cartInfoList.length }}</span
-					>件商品
+					已选择 <span>{{ cartInfoList.length }}</span>件商品
 				</div>
 				<div class="sumprice">
 					<em>总价（不含运费） ：</em>
@@ -76,8 +76,8 @@ export default {
 		getData() {
 			this.$store.dispatch('shopcart/getCartList');
 		},
-		//改变商品数量
-		async handle(type, disNum, cart) {
+		//改变商品数量(节流)
+		handle: throttle(async function (type, disNum, cart) {
 			console.log(type, disNum, cart.skuNum);
 			switch (type) {
 				case 'minus':
@@ -101,8 +101,8 @@ export default {
 			try {
 				await this.$store.dispatch('detail/addOrUpdateShopCart', { skuId: cart.skuId, skuNum: disNum });
 				this.getData();
-			} catch (error) {}
-		},
+			} catch (error) { }
+		},1000) ,
 		//删除商品
 		async deleteCartById(cart) {
 			try {
@@ -111,6 +111,15 @@ export default {
 				this.getData();
 			} catch (error) {}
 		},
+
+		//修改产品选中状态
+		async updateChecked(cart, event){
+			try{
+				let isChecked = event.target.checked ? "1" : "0"
+				await this.$store.dispatch('shopcart/updateCheckedById', { skuId: cart.skuId, isChecked })
+				this.getData();
+			}catch (error){}
+		}
 	},
 	mounted() {
 		//获取个人购物车数据

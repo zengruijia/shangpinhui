@@ -1,4 +1,4 @@
-import { reqGetShopCarList, reqDeleteCartById } from '@/api';
+import { reqGetShopCarList, reqDeleteCartById, reqUpdateCheckedById } from '@/api';
 const state = {
 	cartList: [],
 };
@@ -19,6 +19,15 @@ const actions = {
 			return Promise.reject(new Error('fail'));
 		}
 	},
+	//修改某个商品勾选状态
+	async updateCheckedById({ commit }, { skuId, isChecked }) {
+		let result = await reqUpdateCheckedById(skuId, isChecked)
+		if (result.code == 200) {
+			return 'ok'
+		} else {
+			return Promise.reject(new Error('fail'))
+		}
+	}
 };
 const mutations = {
 	GETCARTLIST(state, cartList) {
