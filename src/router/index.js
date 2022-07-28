@@ -2,16 +2,39 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from '@/router/routers';
+import store from '@/store'
 
 //使用插件
 Vue.use(VueRouter);
 
 //配置路由
-export default new VueRouter({
+let router = new VueRouter({
 	routes,
 	//路由滚动配置
 	scrollBehavior(to, from, savedPosition) {
-    // y=0代表滚动条为在最顶部
+		// y=0代表滚动条为在最顶部
 		return { y: 0 };
 	},
 });
+
+//路由前置守卫
+router.beforeEach((to, from, next) => {
+	//to:可以获取到你要跳转到哪个路由信息
+	//from:获取从哪里来
+	//next:放行函数 next() next(path) next(false)
+
+	//已经登陆过就不能跳到login路由
+	if (store.state.user.token) {
+		if (to.path == '/login') {
+			//登陆过想去login不放行
+			next('/home')
+		}else{
+			next()
+		}
+	}else{
+		//未登录就放行
+		next()
+	}
+})
+
+export default router

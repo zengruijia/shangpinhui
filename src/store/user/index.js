@@ -1,8 +1,8 @@
-import { reqGetCode, reqUserRegister, reqUserLogin, reqUserInfo } from '@/api';
+import { reqGetCode, reqUserRegister, reqUserLogin, reqUserInfo, reqLogout } from '@/api';
 //登陆与注册
 const state = {
 	code: '',
-	token: '',
+	token: localStorage.getItem('token'),
 	userInfo: {},
 };
 const actions = {
@@ -33,7 +33,7 @@ const actions = {
 		console.log(result);
 		if (result.code == 200) {
 			commit('USERLOGIN', result.data.token);
-      localStorage.setItem('token', result.data.token);
+			localStorage.setItem('token', result.data.token);
 			return 'ok';
 		} else {
 			return Promise.reject(new Error('faile'));
@@ -47,9 +47,20 @@ const actions = {
 			commit('GETUSERINFO', result.data);
 			return 'ok';
 		} else {
-			return Promise.reject(new Error('faile'));
+			return Promise.reject(new Error(result.message));
 		}
 	},
+
+	//退出登录
+	async logOut({ commit }) {
+		let result = await reqLogout()
+		if (result.code == 200) {
+			commit('CLEAR')
+			return 'ok'
+		}else{
+			return Promise.reject(new Error('faile'))
+		}
+	}
 };
 const mutations = {
 	GETCODE(state, code) {
@@ -61,6 +72,11 @@ const mutations = {
 	GETUSERINFO(state, userInfo) {
 		state.userInfo = userInfo;
 	},
+	CLEAR(state) {
+		state.token = ''
+		state.userInfo = {}
+		localStorage.removeItem('token')
+	}
 };
 const getters = {};
 export default {

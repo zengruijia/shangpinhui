@@ -11,9 +11,9 @@
 						<router-link to="/login">登录</router-link>|
 						<router-link to="/register">免费注册</router-link>
 					</p>
-          <p v-else>
+					<p v-else>
 						<a>{{userName}}</a>
-            <a class="register">退出登录</a>
+						<a class="register" @click="logout">退出登录</a>
 					</p>
 				</div>
 				<div class="typeList">
@@ -73,6 +73,16 @@ export default {
 
 			this.$router.push(locations);
 		},
+		//退出登录
+		async logout(){
+			try{
+				await this.$store.dispatch('user/logOut')
+				this.$router.push('/home')
+			}catch(error){
+				console.log(error.message);
+				
+			}
+		}
 	},
 	mounted() {
 		//通过全局事件总线清除keyword
