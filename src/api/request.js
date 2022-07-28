@@ -22,6 +22,13 @@ requests.interceptors.request.use(config => {
 		//请求头添加字段(userTempId):和后端商量好
 		config.headers.userTempId = store.state.detail.uuid_token;
 	}
+	//需要携带token请求服务器
+	// if (store.state.user.token) {
+	// 	config.headers.token = store.state.user.token;
+	// }
+	if (localStorage.getItem('token')) {
+		config.headers.token = localStorage.getItem('token');
+	}
 	nprogress.start();
 	return config;
 });
