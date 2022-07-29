@@ -33,15 +33,9 @@ export default {
 	computed: {
 		...mapState('home', ['floorList']),
 	},
-	async mounted() {
+	mounted() {
 		//通知vuex请求数据
 		this.$store.dispatch('home/getFloorList');
-		try{
-			//获取用户信息
-			await this.$store.dispatch('user/getUserInfo');
-		}catch(error){
-			console.log(error.message);
-		}
 	},
 };
 </script>

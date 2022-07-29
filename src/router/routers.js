@@ -4,13 +4,19 @@ import Search from '@/pages/Search';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Detail from '@/pages/Detail';
-import AddCartSuccess from '@/pages/AddCartSuccess'
-import ShopCar from '@/pages/ShopCar'
+import AddCartSuccess from '@/pages/AddCartSuccess';
+import ShopCar from '@/pages/ShopCar';
+import Trade from '@/pages/Trade';
 
 //路由配置星系
 export default [
-	{ 
-    name: 'shopcar',
+	{
+		path: '/trade',
+		component: Trade,
+		mate: { show: true },
+	},
+	{
+		name: 'shopcar',
 		path: '/shopcar',
 		component: ShopCar,
 		meta: { show: true },

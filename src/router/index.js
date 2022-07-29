@@ -18,22 +18,38 @@ let router = new VueRouter({
 });
 
 //路由前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
 	//to:可以获取到你要跳转到哪个路由信息
 	//from:获取从哪里来
 	//next:放行函数 next() next(path) next(false)
 
+  let token = store.state.user.token
+  let name = store.state.user.userInfo.name
+
 	//已经登陆过就不能跳到login路由
-	if (store.state.user.token) {
-		if (to.path == '/login') {
+	if (token) {
+		if (to.path == '/login' || to.path == '/register') {
 			//登陆过想去login不放行
-			next('/home')
-		}else{
-			next()
+			next('/home');
+		} else {
+			if (name) {
+				next();
+			} else {
+				//没有用户信息情况
+				try {
+					//有token获取用户信息
+					await store.dispatch('user/getUserInfo');
+					next();
+				} catch (error) {
+					//有token但是过期了
+					store.dispatch('user/logOut');
+					next('/login');
+				}
+			}
 		}
-	}else{
+	} else {
 		//未登录就放行
-		next()
+		next();
 	}
 })
 
