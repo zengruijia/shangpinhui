@@ -7,9 +7,21 @@ import Detail from '@/pages/Detail';
 import AddCartSuccess from '@/pages/AddCartSuccess';
 import ShopCar from '@/pages/ShopCar';
 import Trade from '@/pages/Trade';
+import Pay from '@/pages/Pay'
+import PaySuccess from '@/pages/PaySuccess'
 
 //路由配置星系
 export default [
+	{
+		path: '/paysuccess',
+		component: PaySuccess,
+		mate: { show: true },
+	},
+	{
+		path: '/pay',
+		component: Pay,
+		mate: { show: true },
+	},
 	{
 		path: '/trade',
 		component: Trade,
