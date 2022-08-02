@@ -1,4 +1,4 @@
-//引入路由组件
+//引入一级路由组件
 import Home from '@/pages/Home';
 import Search from '@/pages/Search';
 import Login from '@/pages/Login';
@@ -7,11 +7,35 @@ import Detail from '@/pages/Detail';
 import AddCartSuccess from '@/pages/AddCartSuccess';
 import ShopCar from '@/pages/ShopCar';
 import Trade from '@/pages/Trade';
-import Pay from '@/pages/Pay'
-import PaySuccess from '@/pages/PaySuccess'
+import Pay from '@/pages/Pay';
+import PaySuccess from '@/pages/PaySuccess';
+import Center from '@/pages/Center';
+//引入二级路由组件
+import myOrder from '@/pages/Center/myOrder';
+import groupOrder from '@/pages/Center/groupOrder';
 
 //路由配置星系
 export default [
+	{
+		path: '/center',
+		component: Center,
+		mate: { show: true },
+		//二级路由
+		children: [
+			{
+				path: 'myorder',
+				component: myOrder,
+			},
+			{
+				path: 'grouporder',
+				component: groupOrder,
+			},
+			{
+				path: '/center',
+				redirect: '/center/myorder',
+			},
+		],
+	},
 	{
 		path: '/paysuccess',
 		component: PaySuccess,

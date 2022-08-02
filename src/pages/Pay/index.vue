@@ -84,16 +84,16 @@
 </template>
 
 <script>
-import QRCode from 'qrcode'
+import QRCode from 'qrcode';
 export default {
 	name: 'Pay',
 	data() {
 		return {
 			orderId: this.$route.query.orderId,
 			payInfo: {},
-      timer:null,
-      //支付状态码
-      code:''
+			timer: null,
+			//支付状态码
+			code: '',
 		};
 	},
 	//生命周期函数中尽量不要使用async
@@ -110,37 +110,53 @@ export default {
 		},
 		//弹出框
 		async open() {
-      //生成二维码
-      let url = await QRCode.toDataURL(this.payInfo.codeUrl)
+			//生成二维码
+			let url = await QRCode.toDataURL(this.payInfo.codeUrl);
 			this.$alert(`<img src="${url}"></img>`, '请你微信支付', {
 				dangerouslyUseHTMLString: true,
-        center:true,
-        showCancelButton:true,
-        cancelButtonText:'遇见支付问题',
-        confirmButtonText:'支付成功',
-        showClose:false
+				center: true,
+				showCancelButton: true,
+				cancelButtonText: '遇见支付问题', //取消按钮文字
+				confirmButtonText: '支付成功', //确定按钮文字
+				showClose: false,
+				beforeClose: (action, instance, done) => {
+					if (action == 'cancel') {
+						alert('请联系管理员');
+						clearInterval(this.timer);
+						this.timer = null;
+						done();
+					} else {
+						// if (result.code == 200) {
+							clearInterval(this.timer);
+							this.timer = null;
+							done();
+							//跳转到支付成功页
+							this.$router.push('/paysuccess');
+						// }
+					}
+				},
 			});
-      //重复请求接口获取是否支付结果
-      //定时器没有开启新的定时器
-      if(!this.timer){
-        this.timer = setInterval(async ()=>{
-          let result = await this.$API.reqPayStatus(this.orderId)
-          console.log(result);
-          //如果支付成功
-          if(result.code==200){
-            //清除定时器
-            clearInterval(this.timer)
-            this.timer = null
-            //保存支付成功返回的code
-            this.code = result.code
-            //隐藏弹出框
-            this.$msgbox.close()
-            //跳转到支付成功页
-            this.$router.push('/paysuccess')
-          }
-        },1000)
-      }
-    },
+			//重复请求接口获取是否支付结果
+			//定时器没有开启新的定时器
+			if (!this.timer) {
+				this.timer = setInterval(async () => {
+					let result = await this.$API.reqPayStatus(this.orderId);
+					console.log(result);
+					//如果支付成功
+					if (result.code == 200) {
+						//清除定时器
+						clearInterval(this.timer);
+						this.timer = null;
+						//保存支付成功返回的code
+						this.code = result.code;
+						//隐藏弹出框
+						this.$msgbox.close();
+						//跳转到支付成功页
+						this.$router.push('/paysuccess');
+					}
+				}, 1000);
+			}
+		},
 	},
 };
 </script>
