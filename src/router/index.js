@@ -27,7 +27,9 @@ router.beforeEach(async (to, from, next) => {
   let name = store.state.user.userInfo.name
 
 	//已经登陆过就不能跳到login路由
-	if (token) {
+	if (token) { 
+		console.log(to);
+		
 		if (to.path == '/login' || to.path == '/register') {
 			//登陆过想去login不放行
 			next('/home');
