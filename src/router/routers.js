@@ -40,16 +40,40 @@ export default [
 		path: '/paysuccess',
 		component: PaySuccess,
 		mate: { show: true },
+		//路由独享守卫
+		beforeEnter: (to, from, next) => {
+			if (from.path == 'pay') {
+				next();
+			} else {
+				next(false); //从哪来回哪去
+			}
+		},
 	},
 	{
 		path: '/pay',
 		component: Pay,
 		mate: { show: true },
+		//路由独享守卫
+		beforeEnter: (to, from, next) => {
+			if (from.path == 'trade') {
+				next();
+			} else {
+				next(false); //从哪来回哪去
+			}
+		},
 	},
 	{
 		path: '/trade',
 		component: Trade,
 		mate: { show: true },
+		//路由独享守卫
+		beforeEnter: (to, from, next) => {
+			if (from.path == 'shopcar') {
+				next();
+			} else {
+				next(false); //从哪来回哪去
+			}
+		},
 	},
 	{
 		name: 'shopcar',

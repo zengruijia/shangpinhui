@@ -2,7 +2,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from '@/router/routers';
-import store from '@/store'
+import store from '@/store';
 
 //使用插件
 Vue.use(VueRouter);
@@ -23,13 +23,11 @@ router.beforeEach(async (to, from, next) => {
 	//from:获取从哪里来
 	//next:放行函数 next() next(path) next(false)
 
-  let token = store.state.user.token
-  let name = store.state.user.userInfo.name
+	let token = store.state.user.token;
+	let name = store.state.user.userInfo.name;
 
 	//已经登陆过就不能跳到login路由
-	if (token) { 
-		console.log(to);
-		
+	if (token) {
 		if (to.path == '/login' || to.path == '/register') {
 			//登陆过想去login不放行
 			next('/home');
@@ -50,9 +48,13 @@ router.beforeEach(async (to, from, next) => {
 			}
 		}
 	} else {
-		//未登录就放行
-		next();
+		//未登录不能去交易相关页面，不能去个人中心
+		if (to.path == '/trade' || to.path == '/pay' || to.path == '/center/myorder') {
+			next('/login?redirect='+to.path);  //未登录时没有去成的信息存在路径中
+		} else {
+			next();
+		}
 	}
-})
+});
 
-export default router
+export default router;

@@ -17,15 +17,24 @@ import { reqGetSearchInfo } from '@/api';
 //引入mock
 import '@/mock/mockServer';
 
-//swiper
+//引入swiper样式
 import 'swiper/css/swiper.css';
 
 //统一接口API文件夹里面的全部请求接口
 //统一引入
 import * as API from '@/api';
 
-//element-ui
+//引入element-ui
 import { Button, MessageBox } from 'element-ui';
+
+//引入图片懒加载
+import VueLazyload from 'vue-lazyload';
+//引入懒加载图片
+import atm from '@/assets/1.gif';
+Vue.use(VueLazyload, {
+	//懒加载默认图片
+	loading: atm,
+});
 
 reqCategoryList();
 console.log(reqGetSearchInfo({}));

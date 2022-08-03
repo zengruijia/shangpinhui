@@ -79,7 +79,9 @@ export default {
 			try {
 				const { phone, password } = this;
 				if (phone && password) await this.$store.dispatch('user/userLogin', { phone, password });
-        this.$router.push('/home')
+				//判断路由当中是否有query参数，如果有就跳到query指定页面,没有就跳到首页
+				let topath = this.$route.query.redirect || '/home';
+				this.$router.push(topath);
 			} catch (error) {
 				alert(error.message);
 			}
